@@ -5,21 +5,21 @@ function selectionSort(array) {
     return result;
 }
 
-function selectionSortHelper(slicedArray, animations) {
-    for(let i=0; i<slicedArray.length; i++)
+function selectionSortHelper(originalArray, animations) {
+    for(let i=0; i<originalArray.length; i++)
     {
         let minIndex = i;
-        for(let j=i; j<slicedArray.length; j++)
+        for(let j=i; j<originalArray.length; j++)
         {
-            if(slicedArray[minIndex] > slicedArray[j])
+            if(originalArray[minIndex] > originalArray[j])
             {
                 minIndex = j;
             }
         }
 
-        let temp = slicedArray[minIndex];
-        slicedArray[minIndex] = slicedArray[i];
-        slicedArray[i] = temp;
+        let temp = originalArray[minIndex];
+        originalArray[minIndex] = originalArray[i];
+        originalArray[i] = temp;
 
         animations.push([i, minIndex]);     //first for changing background color
         animations.push([i, minIndex]);     //second for changing to initial color and change height

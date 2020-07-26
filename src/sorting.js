@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import selectionSort from './SortingAlgorithms/selectionSort';
+import bubbleSort from './SortingAlgorithms/bubbleSort';
+import insertionSort from './SortingAlgorithms/insertionSort';
 import './sorting.css';
 
 const SIZE_OF_ARRAY = 50;
-const TIME_DELAY = 100;
+const TIME_DELAY = 20;
 
 class SortingAlgo extends Component {
 
@@ -28,10 +30,7 @@ class SortingAlgo extends Component {
         this.setState({array});
     }
 
-    sort() {
-        const {array} = this.state;
-        const animations = selectionSort(array);
-
+    updateUI(animations) {
         const arrayBar = document.getElementsByClassName('array-bar');
 
         for(let i=0; i<animations.length; i++)
@@ -42,7 +41,7 @@ class SortingAlgo extends Component {
             let currentElement = arrayBar[currentIndex];
             let minElement = arrayBar[minIndex];
 
-            if(i%2 == 0) {
+            if(i%2 === 0) {
                 setTimeout(() => {
                     currentElement.style.backgroundColor = 'red';
                     minElement.style.backgroundColor = 'red';
@@ -61,6 +60,27 @@ class SortingAlgo extends Component {
         }
     }
 
+    selectionSort() {
+        const {array} = this.state;
+        const animations = selectionSort(array);
+
+        this.updateUI(animations);
+    }
+
+    bubbleSort() {
+        const {array} = this.state;
+        const animations = bubbleSort(array);
+
+        this.updateUI(animations);
+    }
+
+    insertionSort() {
+        const {array} = this.state;
+        const animations = insertionSort(array);
+
+        this.updateUI(animations);
+    }
+
     render() {
 
         const {array} = this.state;
@@ -70,7 +90,9 @@ class SortingAlgo extends Component {
                 <h1>Sorting Algorithms</h1>
                 <div className="btn-group">
                     <button className="generate-array-btn" onClick={() => this.resetArray()}>Generate New Array</button>
-                    <button className="generate-array-btn" onClick={() => this.sort()}>Selection Sort</button>
+                    <button className="generate-array-btn" onClick={() => this.selectionSort()}>Selection Sort</button>
+                    <button className="generate-array-btn" onClick={() => this.bubbleSort()}>Bubble Sort</button>
+                    <button className="generate-array-btn" onClick={() => this.insertionSort()}>Insertion Sort</button>
                 </div>
                 <div className="array-container">
                     {array.map((value, idx) => (
