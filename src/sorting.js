@@ -2,10 +2,13 @@ import React, {Component} from 'react';
 import selectionSort from './SortingAlgorithms/selectionSort';
 import bubbleSort from './SortingAlgorithms/bubbleSort';
 import insertionSort from './SortingAlgorithms/insertionSort';
+import mergeSort from './SortingAlgorithms/mergeSort';
 import './sorting.css';
 
-const SIZE_OF_ARRAY = 50;
-const TIME_DELAY = 20;
+const SIZE_OF_ARRAY = 100;
+const TIME_DELAY = 1000/SIZE_OF_ARRAY;
+const PRIMARY_COLOR = '#6D83F2';
+const SECONDARY_COLOR = 'red';
 
 class SortingAlgo extends Component {
 
@@ -43,8 +46,8 @@ class SortingAlgo extends Component {
 
             if(i%2 === 0) {
                 setTimeout(() => {
-                    currentElement.style.backgroundColor = 'red';
-                    minElement.style.backgroundColor = 'red';
+                    currentElement.style.backgroundColor = SECONDARY_COLOR;
+                    minElement.style.backgroundColor = SECONDARY_COLOR;
                 }, i * TIME_DELAY);
             }
             else {
@@ -53,8 +56,8 @@ class SortingAlgo extends Component {
                     currentElement.style.height = minElement.style.height;
                     minElement.style.height = `${tempheight}`;
 
-                    currentElement.style.backgroundColor = 'blue';
-                    minElement.style.backgroundColor = 'blue';
+                    currentElement.style.backgroundColor = PRIMARY_COLOR;
+                    minElement.style.backgroundColor = PRIMARY_COLOR;
                 }, i * TIME_DELAY);
             }
         }
@@ -81,6 +84,33 @@ class SortingAlgo extends Component {
         this.updateUI(animations);
     }
 
+    mergeSort() {
+        const {array} = this.state;
+        const animations = mergeSort(array);
+
+        console.log(animations);
+        for (let i = 0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+            const isColorChange = i % 3 !== 2;
+            if (isColorChange) {
+                const [barOneIdx, barTwoIdx] = animations[i];
+                const barOneStyle = arrayBars[barOneIdx].style;
+                const barTwoStyle = arrayBars[barTwoIdx].style;
+                const color = i % 3 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
+                setTimeout(() => {
+                barOneStyle.backgroundColor = color;
+                barTwoStyle.backgroundColor = color;
+                }, i * TIME_DELAY);
+            } else {
+                setTimeout(() => {
+                const [barOneIdx, newHeight] = animations[i];
+                const barOneStyle = arrayBars[barOneIdx].style;
+                barOneStyle.height = `${newHeight}px`;
+                }, i * TIME_DELAY);
+            }
+        }
+    }
+
     render() {
 
         const {array} = this.state;
@@ -93,6 +123,7 @@ class SortingAlgo extends Component {
                     <button className="generate-array-btn" onClick={() => this.selectionSort()}>Selection Sort</button>
                     <button className="generate-array-btn" onClick={() => this.bubbleSort()}>Bubble Sort</button>
                     <button className="generate-array-btn" onClick={() => this.insertionSort()}>Insertion Sort</button>
+                    <button className="generate-array-btn" onClick={() => this.mergeSort()}>Merge Sort</button>
                 </div>
                 <div className="array-container">
                     {array.map((value, idx) => (
@@ -100,11 +131,12 @@ class SortingAlgo extends Component {
                             className="array-bar"
                             key={idx}
                             style={{
-                            backgroundColor: 'blue',
+                            backgroundColor: PRIMARY_COLOR,
                             height: `${value}px`,
                         }}></div>
                     ))}
                 </div>
+                <h4 className="owner">Created by Deep Godhani</h4>
             </div>
         );
     }

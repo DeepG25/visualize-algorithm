@@ -1,5 +1,8 @@
 .array-container {
     width: 100%;
+    position: absolute;
+    left: 0px;
+    bottom: 15%;
 }
 
 .array-bar {
@@ -14,10 +17,25 @@
 
 .generate-array-btn {
     color: white;
-    background-color: blue;
+    background-color: #6D83F2;
     outline: none;
     border: none;
+    border-radius: 5px;
+    box-shadow: 10px 10px 20px 0.5px #cccccc;
     padding: 10px 30px;
-    font-size: 12px;
-    margin: 20px 10px 50px;
+    font-size: 15px;
+    margin: 30px 20px 50px;
+}
+
+.generate-array-btn:hover {
+    padding: 8px 26px;
+    font-size: 14px;
+    margin: 30px 28px 50px;
+}
+
+.owner {
+    position: absolute;
+    left: 43%;
+    bottom: 20px;
+    font-size: 18px;
 }
