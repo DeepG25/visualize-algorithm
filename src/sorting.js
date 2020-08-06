@@ -3,10 +3,11 @@ import selectionSort from './SortingAlgorithms/selectionSort';
 import bubbleSort from './SortingAlgorithms/bubbleSort';
 import insertionSort from './SortingAlgorithms/insertionSort';
 import mergeSort from './SortingAlgorithms/mergeSort';
+import quickSort from './SortingAlgorithms/quickSort';
 import './sorting.css';
 
-const SIZE_OF_ARRAY = 100;
-const TIME_DELAY = 1000/SIZE_OF_ARRAY;
+let SIZE_OF_ARRAY = 50;
+let TIME_DELAY = 55;
 const PRIMARY_COLOR = '#6D83F2';
 const SECONDARY_COLOR = 'red';
 
@@ -25,10 +26,11 @@ class SortingAlgo extends Component {
     }
 
     resetArray() {
+        this.setSpeedOfAlgorithm();
         const array = [];
         for(let i=0; i<SIZE_OF_ARRAY; i++)
         {
-            array.push(this.randomInt(100, 500));
+            array.push(this.randomInt(100, window.screen.height*0.5));
         }
         this.setState({array});
     }
@@ -48,7 +50,7 @@ class SortingAlgo extends Component {
                 setTimeout(() => {
                     currentElement.style.backgroundColor = SECONDARY_COLOR;
                     minElement.style.backgroundColor = SECONDARY_COLOR;
-                }, i * TIME_DELAY);
+                }, 2 * i * TIME_DELAY);
             }
             else {
                 setTimeout(() => {
@@ -58,12 +60,20 @@ class SortingAlgo extends Component {
 
                     currentElement.style.backgroundColor = PRIMARY_COLOR;
                     minElement.style.backgroundColor = PRIMARY_COLOR;
-                }, i * TIME_DELAY);
+                }, 2 * i * TIME_DELAY);
+            }
+
+            if(i === animations.length - 1)
+            {
+                setTimeout(() => {
+                    this.enableButtons();
+                },2 * i * TIME_DELAY);
             }
         }
     }
 
     selectionSort() {
+        this.disableButtons();
         const {array} = this.state;
         const animations = selectionSort(array);
 
@@ -71,6 +81,7 @@ class SortingAlgo extends Component {
     }
 
     bubbleSort() {
+        this.disableButtons();
         const {array} = this.state;
         const animations = bubbleSort(array);
 
@@ -78,6 +89,7 @@ class SortingAlgo extends Component {
     }
 
     insertionSort() {
+        this.disableButtons();
         const {array} = this.state;
         const animations = insertionSort(array);
 
@@ -85,6 +97,7 @@ class SortingAlgo extends Component {
     }
 
     mergeSort() {
+        this.disableButtons();
         const {array} = this.state;
         const animations = mergeSort(array);
 
@@ -100,14 +113,59 @@ class SortingAlgo extends Component {
                 setTimeout(() => {
                 barOneStyle.backgroundColor = color;
                 barTwoStyle.backgroundColor = color;
-                }, i * TIME_DELAY);
+                }, 2 * i * TIME_DELAY);
             } else {
                 setTimeout(() => {
                 const [barOneIdx, newHeight] = animations[i];
                 const barOneStyle = arrayBars[barOneIdx].style;
                 barOneStyle.height = `${newHeight}px`;
-                }, i * TIME_DELAY);
+                }, 2 * i * TIME_DELAY);
             }
+
+            if(i === animations.length - 1)
+            {
+                setTimeout(() => {
+                    this.enableButtons();
+                },2 * i * TIME_DELAY);
+            }
+        }
+    }
+
+    quickSort() {
+        this.disableButtons();
+        const {array} = this.state;
+        const animations = quickSort(array);
+
+        console.log(array);
+        this.updateUI(animations);
+    }
+
+    setSpeedOfAlgorithm() {
+        let speedSlider = document.getElementById('speedSlider');
+        speedSlider.oninput = function() {
+            TIME_DELAY = 1000/this.value;
+        }
+    }
+
+    disableButtons() {
+        let buttons = document.getElementsByClassName('generate-array-btn');
+
+        for(let i=0; i<buttons.length; i++)
+        {
+            buttons[i].disabled = true;
+            buttons[i].style.backgroundColor = '#F0F0F0';
+            buttons[i].style.color = '#000000';
+        }
+    }
+
+    enableButtons() {
+        let buttons = document.getElementsByClassName('generate-array-btn');
+
+        for(let i=0; i<buttons.length; i++)
+        {
+            buttons[i].disabled = false;
+            buttons[i].style.backgroundColor = '#6D83F2';
+            buttons[i].style.color = '#ffffff';
         }
     }
 
@@ -124,6 +182,7 @@ class SortingAlgo extends Component {
                     <button className="generate-array-btn" onClick={() => this.bubbleSort()}>Bubble Sort</button>
                     <button className="generate-array-btn" onClick={() => this.insertionSort()}>Insertion Sort</button>
                     <button className="generate-array-btn" onClick={() => this.mergeSort()}>Merge Sort</button>
+                    <button className="generate-array-btn" onClick={() => this.quickSort()}>Quick Sort</button>
                 </div>
                 <div className="array-container">
                     {array.map((value, idx) => (
@@ -133,8 +192,13 @@ class SortingAlgo extends Component {
                             style={{
                             backgroundColor: PRIMARY_COLOR,
                             height: `${value}px`,
+                            width: `${1000/SIZE_OF_ARRAY}px`
                         }}></div>
                     ))}
+                </div>
+                <div class="speedslidecontainer">
+                      <input type="range" min="10" max="100" class="slider" id="speedSlider"/>
+                      <h4>Speed Of Algorithm</h4>
                 </div>
                 <h4 className="owner">Created by Deep Godhani</h4>
             </div>
