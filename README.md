@@ -2,7 +2,7 @@
 
 A web interface used to visualize different algorithms including sorting.
 
-### `Demo` : [Visualize-Algorithm](http://DeepG25.github.io/Visualize-Algorithm)
+### `Demo` : [Visualize-Algorithm](http://DeepG25.github.io/visualize-algorithm)
 
 In the project directory, you can run:
 
